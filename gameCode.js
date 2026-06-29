@@ -6,21 +6,21 @@ const results = document.querySelector("#results");
 let humanScore = 0;
 let computerScore = 0;
 
-while (humanScore < 5 && computerScore < 5) {
-    rockButton.addEventListener("click", () => playRound("rock", getComputerChoice()));
-    paperButton.addEventListener("click", () => playRound("paper", getComputerChoice()));
-    scissorsButton.addEventListener("click", () => playRound("scissors", getComputerChoice()));
-}
+const intHumanResult = document.createElement("p");
+intHumanResult.textContent = `Your score: `;
+results.appendChild(intHumanResult);
+const intCompResult = document.createElement("p");
+intCompResult.textContent = `Computer score: `;
+results.appendChild(intCompResult);
 
-if (humanScore >= 5 || computerScore >= 5) {
-    const finalResult = document.createElement("h3");
-    if (humanScore >= 5) {
-    finalResult.textContent = `And the winner is: the human!`;
-    } else {
-        finalResult.textContent = `And the winner is: the computer!`;
-    }
-    results.appendChild(finalResult);
-}
+const hScore = document.createTextNode(humanScore);
+const cScore = document.createTextNode(computerScore);
+intHumanResult.appendChild(hScore);
+intCompResult.appendChild(cScore);
+
+rockButton.addEventListener("click", () => playRound("rock", getComputerChoice()));
+paperButton.addEventListener("click", () => playRound("paper", getComputerChoice()));
+scissorsButton.addEventListener("click", () => playRound("scissors", getComputerChoice()));
 
 function getComputerChoice() {
     let value = Math.floor(Math.random() * 3);
@@ -81,6 +81,18 @@ function playRound(humanChoice, computerChoice) {
             ++humanScore;
         }
     }
-    console.log(`Your score: ${humanScore}`);
-    console.log(`Computer score: ${computerScore}`);
+    hScore.nodeValue = humanScore;
+    cScore.nodeValue = computerScore;
+
+    if (humanScore == 5 || computerScore == 5) {
+        const finalResult = document.createElement("h3");
+        if (humanScore >= 5) {
+            finalResult.textContent = `And the winner is: the human! Keep playing?`;
+        } else {
+            finalResult.textContent = `And the winner is: the computer! Try again?`;
+        }
+        results.appendChild(finalResult);
+        humanScore = 0;
+        computerScore = 0;
+    }
 }
